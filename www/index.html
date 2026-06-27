@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>নামাজ সময় - Salah Times</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <div id="app">
+
+    <!-- Header -->
+    <header class="header">
+      <div class="header-top">
+        <h1>নামাজ সময়</h1>
+        <button id="locationBtn" class="icon-btn" title="লোকেশন পরিবর্তন">📍</button>
+      </div>
+      <div id="locationLabel" class="location-label">লোকেশন খোঁজা হচ্ছে...</div>
+      <div id="hijriDate" class="hijri-date">--</div>
+    </header>
+
+    <!-- Next prayer countdown -->
+    <section class="countdown-card">
+      <div class="countdown-label">পরবর্তী নামাজ</div>
+      <div id="nextPrayerName" class="countdown-prayer">--</div>
+      <div id="countdownTimer" class="countdown-timer">--:--:--</div>
+    </section>
+
+    <!-- Prayer times list -->
+    <section class="prayer-list" id="prayerList">
+      <!-- JS দিয়ে রেন্ডার হবে -->
+    </section>
+
+    <!-- Tab navigation -->
+    <nav class="tab-bar">
+      <button class="tab-btn active" data-tab="home">🕐<span>সময়</span></button>
+      <button class="tab-btn" data-tab="qibla">🧭<span>কিবলা</span></button>
+      <button class="tab-btn" data-tab="settings">⚙️<span>সেটিংস</span></button>
+    </nav>
+
+    <!-- Qibla tab -->
+    <section class="tab-panel" id="tab-qibla" hidden>
+      <h2>কিবলা দিক নির্দেশক</h2>
+      <div class="qibla-wrap">
+        <div class="qibla-compass" id="qiblaCompass">
+          <div class="qibla-needle" id="qiblaNeedle">🕋</div>
+        </div>
+        <p id="qiblaStatus" class="qibla-status">কম্পাস চালু করতে নিচে ট্যাপ করুন</p>
+        <button id="enableCompassBtn" class="primary-btn">কম্পাস চালু করুন</button>
+      </div>
+    </section>
+
+    <!-- Settings tab -->
+    <section class="tab-panel" id="tab-settings" hidden>
+      <h2>সেটিংস</h2>
+
+      <div class="setting-group">
+        <label>ক্যালকুলেশন মেথড</label>
+        <select id="methodSelect">
+          <option value="MuslimWorldLeague">Muslim World League</option>
+          <option value="Karachi">University of Islamic Sciences, Karachi</option>
+          <option value="Egyptian">Egyptian General Authority</option>
+          <option value="UmmAlQura">Umm al-Qura, Makkah</option>
+          <option value="Dubai">Dubai</option>
+          <option value="MoonsightingCommittee">Moonsighting Committee</option>
+          <option value="NorthAmerica">ISNA, North America</option>
+          <option value="Singapore">Singapore</option>
+        </select>
+      </div>
+
+      <div class="setting-group">
+        <label>মাদহাব (আসর হিসাব)</label>
+        <select id="madhabSelect">
+          <option value="Shafi">শাফি / মালিকি / হাম্বলি (সাধারণ)</option>
+          <option value="Hanafi">হানাফি</option>
+        </select>
+      </div>
+
+      <div class="setting-group">
+        <label>নোটিফিকেশন</label>
+        <div class="toggle-row">
+          <span>নামাজের সময় নোটিফিকেশন</span>
+          <input type="checkbox" id="notifyToggle" class="switch">
+        </div>
+      </div>
+
+      <div class="setting-group">
+        <label>লোকেশন</label>
+        <button id="refreshLocationBtn" class="secondary-btn">📍 লোকেশন রিফ্রেশ করুন</button>
+        <button id="manualLocationBtn" class="secondary-btn">✏️ ম্যানুয়ালি শহর বাছুন</button>
+      </div>
+
+      <div class="setting-group about-box">
+        <p>সালাহ টাইমস অ্যাপ — উচ্চ-নির্ভুল গাণিতিক হিসাব দিয়ে তৈরি, কোনো ইন্টারনেট সংযোগ ছাড়াই কাজ করে।</p>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- City picker modal -->
+  <div id="cityModal" class="modal" hidden>
+    <div class="modal-content">
+      <h3>শহর বাছুন</h3>
+      <div class="city-list" id="cityList"></div>
+      <button id="closeCityModal" class="secondary-btn">বাতিল</button>
+    </div>
+  </div>
+
+  <div id="toast" class="toast" hidden></div>
+
+  <!-- Adhan.js — prayer time calculation library (CDN, MIT license).
+       No trailing slash on the bare URL: that returns an HTML directory listing instead of JS
+       (this was the bug that broke prayer time calculation earlier).
+       A small fallback chain is used in case one CDN mirror has an issue. -->
+  <script src="https://cdn.jsdelivr.net/npm/adhan@4.4.3"
+          onerror="this.onerror=null;
+                   var s=document.createElement('script');
+                   s.src='https://unpkg.com/adhan@4.4.3';
+                   s.onerror=function(){
+                     var s2=document.createElement('script');
+                     s2.src='https://cdn.jsdelivr.net/npm/adhan@4.4.3/lib/adhan.min.js';
+                     document.head.appendChild(s2);
+                   };
+                   document.head.appendChild(s);"></script>
+
+  <!-- Capacitor core + plugins (no-op safely on regular web) -->
+  <script>
+    // Will be populated by Capacitor when running inside the native app
+  </script>
+
+  <script src="js/cities.js"></script>
+  <script src="js/hijri.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
